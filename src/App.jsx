@@ -11,12 +11,41 @@ function App() {
   const [userPassport, setUserPassport] = useState("USA");
   const [passportMap, setPassportMap] = useState(null);
   const [availableCountries, setAvailableCountries] = useState([]);
+  const [countryDataMap, setCountryDataMap] = useState({});
 
   useEffect(() => {
     fetchGlobeData();
+    fetchCountriesData();
     fetchPassportData();
     getUserLocation();
   }, []);
+
+  const fetchCountriesData = async () => {
+    try {
+      const response = await fetch(
+        "https://restcountries.com/v3.1/all?fields=name,cca3,currencies,flags,population,languages,capital"
+      );
+      const data = await response.json();
+      const countryMap = data.reduce((acc, country) => {
+        acc[country.cca3] = {
+          name: country.name.common,
+          population: country.population,
+          capital: country.capital ? country.capital[0] : "N/A",
+          currency: country.currencies
+            ? Object.keys(country.currencies)[0]
+            : "N/A",
+          language: country.languages
+            ? Object.values(country.languages)[0]
+            : "N/A",
+          flag: country.flags ? country.flags.svg : null,
+        };
+        return acc;
+      }, {});
+      setCountryDataMap(countryMap);
+    } catch (error) {
+      console.error("Error fetching countries data:", error);
+    }
+  };
 
   const fetchGlobeData = async () => {
     try {
@@ -96,11 +125,17 @@ function App() {
 
   const getCountryColor = (country) => {
     const visaReq = getVisaRequirement(country.id);
+
+    if (typeof visaReq === "number") return getVisaColor("visa free");
     return getVisaColor(visaReq);
   };
 
   const handleCountryHover = (country) => {
     setHoveredCountry(country);
+  };
+
+  const handleCountryUnhover = () => {
+    setHoveredCountry(null);
   };
 
   return (
@@ -116,6 +151,7 @@ function App() {
           name={hoveredCountry.properties.name}
           iso={hoveredCountry.id}
           visaRequirement={getVisaRequirement(hoveredCountry.id)}
+          countryData={countryDataMap[hoveredCountry.id] || {}}
         />
       )}
 
@@ -132,6 +168,7 @@ function App() {
         atmosphereAltitude={0.25}
         enablePointerInteraction={true}
         onPolygonHover={handleCountryHover}
+        onPolygonUnhover={handleCountryUnhover}
         polygonLabel=""
         rendererConfig={{
           antialias: true,

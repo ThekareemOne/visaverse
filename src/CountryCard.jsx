@@ -1,29 +1,50 @@
 import "./App.css";
+import { VISA_COLORS, DEFAULT_COLOR } from "./constants/visaColors";
 
 export default function CountryCard({
   name,
   iso,
-  region,
-  population,
-  capital,
   visaRequirement,
+  countryData,
 }) {
-  const getVisaColor = (requirement) => {
-    const colors = {
-      "visa free": "#00ff00",
-      "visa on arrival": "#ffff00",
-      eta: "#ffa500",
-      "e-visa": "#ff8c00",
-      "visa required": "#ff0000",
-      "no admission": "#800000",
-      "covid ban": "#4b0000",
-    };
-    return colors[requirement] || "#cccccc";
+  const getVisaColor = (visaRequirement) => {
+    if (typeof visaRequirement === "number") return VISA_COLORS["visa free"];
+
+    return VISA_COLORS[visaRequirement] || DEFAULT_COLOR;
+  };
+
+  const visaRequirementText = () => {
+    if (typeof visaRequirement === "number") {
+      return "visa free";
+    }
+    return visaRequirement || "Unknown";
+  };
+
+  const formatPopulation = (population) => {
+    if (!population) return "N/A";
+    if (population >= 1000000000) {
+      return (population / 1000000000).toFixed(1) + "B";
+    } else if (population >= 1000000) {
+      return (population / 1000000).toFixed(1) + "M";
+    } else if (population >= 1000) {
+      return (population / 1000).toFixed(1) + "K";
+    }
+    return population.toLocaleString();
   };
 
   return (
     <div className="country-card">
-      <h3>{name}</h3>
+      <h3>
+        {countryData.flag && (
+          <img
+            src={countryData.flag}
+            alt={`${name} flag`}
+            width={24}
+            style={{ marginRight: "8px" }}
+          />
+        )}
+        {name}
+      </h3>
       <div className="country-info">
         <p>
           <strong>ISO Code:</strong> {iso}
@@ -37,17 +58,18 @@ export default function CountryCard({
               textTransform: "capitalize",
             }}
           >
-            {visaRequirement}
+            {visaRequirementText()}
           </span>
         </p>
         <p>
-          <strong>Region:</strong> {region || "Unknown"}
+          <strong>Currency:</strong> {countryData.currency || "Unknown"}
         </p>
         <p>
-          <strong>Population:</strong> {population || "N/A"}
+          <strong>Population:</strong>{" "}
+          {formatPopulation(countryData.population) || "N/A"}
         </p>
         <p>
-          <strong>Capital:</strong> {capital || "N/A"}
+          <strong>Capital:</strong> {countryData.capital || "N/A"}
         </p>
       </div>
     </div>
