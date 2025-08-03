@@ -1,12 +1,7 @@
 import "./App.css";
 import { VISA_COLORS, DEFAULT_COLOR } from "./constants/visaColors";
 
-export default function CountryCard({
-  name,
-  iso,
-  visaRequirement,
-  countryData,
-}) {
+export default function CountryCard({ name, visaRequirement, countryData }) {
   const getVisaColor = (visaRequirement) => {
     if (typeof visaRequirement === "number") return VISA_COLORS["visa free"];
 
@@ -47,9 +42,6 @@ export default function CountryCard({
       </h3>
       <div className="country-info">
         <p>
-          <strong>ISO Code:</strong> {iso}
-        </p>
-        <p>
           <strong>Visa Requirement:</strong>{" "}
           <span
             style={{
@@ -60,6 +52,9 @@ export default function CountryCard({
           >
             {visaRequirementText()}
           </span>
+        </p>
+        <p>
+          <strong>Language:</strong> {countryData.language || "Unknown"}
         </p>
         <p>
           <strong>Currency:</strong> {countryData.currency || "Unknown"}
