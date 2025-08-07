@@ -18,6 +18,7 @@ export default function PassportSelector({
     >
       <label
         htmlFor="passport-select"
+        className="hind-madurai-regular"
         style={{ marginRight: "8px", fontSize: "14px" }}
       >
         Your Passport:

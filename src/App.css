@@ -1,3 +1,5 @@
+/* GLOBAL STYLES */
+
 .country-card {
   position: absolute;
   top: 20px;
@@ -31,7 +33,6 @@
   color: #ccc;
 }
 
-/* Optional: Add a subtle animation */
 .country-card {
   animation: fadeIn 0.2s ease-in-out;
 }
@@ -45,4 +46,42 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* FONTS */
+
+.russo-one-regular {
+  font-family: "Russo One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.hind-madurai-light {
+  font-family: "Hind Madurai", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.hind-madurai-regular {
+  font-family: "Hind Madurai", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.hind-madurai-medium {
+  font-family: "Hind Madurai", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.hind-madurai-semibold {
+  font-family: "Hind Madurai", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.hind-madurai-bold {
+  font-family: "Hind Madurai", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }

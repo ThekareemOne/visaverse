@@ -34,7 +34,7 @@ export default function CountryCard({
 
   return (
     <div className="country-card">
-      <h3>
+      <h3 className="russo-one-regular">
         {countryData.flag && (
           <img
             src={countryData.flag}
@@ -45,7 +45,7 @@ export default function CountryCard({
         )}
         {name}
       </h3>
-      <div className="country-info">
+      <div className="country-info hind-madurai-regular">
         <p>
           <strong>Visa Requirement:</strong>{" "}
           <span
@@ -76,7 +76,7 @@ export default function CountryCard({
           target="_blank"
           rel="noopener noreferrer"
         >
-          <strong>Check Flight Tickets:</strong>
+          <strong>Check Flight Tickets</strong>
         </a>
       </div>
     </div>
