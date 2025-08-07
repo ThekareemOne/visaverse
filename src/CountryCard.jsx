@@ -1,7 +1,12 @@
 import "./App.css";
 import { VISA_COLORS, DEFAULT_COLOR } from "./constants/visaColors";
 
-export default function CountryCard({ name, visaRequirement, countryData }) {
+export default function CountryCard({
+  name,
+  visaRequirement,
+  countryData,
+  userCity,
+}) {
   const getVisaColor = (visaRequirement) => {
     if (typeof visaRequirement === "number") return VISA_COLORS["visa free"];
 
@@ -66,6 +71,13 @@ export default function CountryCard({ name, visaRequirement, countryData }) {
         <p>
           <strong>Capital:</strong> {countryData.capital || "N/A"}
         </p>
+        <a
+          href={`https://www.google.com/travel/flights?q=flights+from+${userCity}+to+${countryData.capital}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <strong>Check Flight Tickets:</strong>
+        </a>
       </div>
     </div>
   );

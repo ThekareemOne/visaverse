@@ -9,9 +9,11 @@ function App() {
   const [polygons, setPolygons] = useState({ features: [] });
   const [hoveredCountry, setHoveredCountry] = useState(null);
   const [userPassport, setUserPassport] = useState("USA");
+  const [userCity, setUserCity] = useState("New York");
   const [passportMap, setPassportMap] = useState(null);
   const [availableCountries, setAvailableCountries] = useState([]);
   const [countryDataMap, setCountryDataMap] = useState({});
+  const [clickedCountry, setClickedCountry] = useState(null);
 
   useEffect(() => {
     fetchGlobeData();
@@ -99,6 +101,7 @@ function App() {
         );
         if (iso3Code) {
           setUserPassport(iso3Code);
+          setUserCity(data.city);
         }
       }
     } catch (error) {
@@ -138,6 +141,12 @@ function App() {
     setHoveredCountry(null);
   };
 
+  const handleCountryClick = (country) => {
+    setClickedCountry(country);
+  };
+
+  const displayedCountry = clickedCountry || hoveredCountry;
+
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
       <PassportSelector
@@ -146,12 +155,13 @@ function App() {
         availableCountries={availableCountries}
       />
 
-      {hoveredCountry && (
+      {displayedCountry && (
         <CountryCard
-          name={hoveredCountry.properties.name}
-          iso={hoveredCountry.id}
-          visaRequirement={getVisaRequirement(hoveredCountry.id)}
-          countryData={countryDataMap[hoveredCountry.id] || {}}
+          name={displayedCountry.properties.name}
+          iso={displayedCountry.id}
+          visaRequirement={getVisaRequirement(displayedCountry.id)}
+          countryData={countryDataMap[displayedCountry.id] || {}}
+          userCity={userCity}
         />
       )}
 
@@ -169,6 +179,7 @@ function App() {
         enablePointerInteraction={true}
         onPolygonHover={handleCountryHover}
         onPolygonUnhover={handleCountryUnhover}
+        onPolygonClick={handleCountryClick}
         polygonLabel=""
         rendererConfig={{
           antialias: true,
