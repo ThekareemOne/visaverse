@@ -32,8 +32,12 @@ export default function CountryCard({
     return population.toLocaleString();
   };
 
+  const handleCardClick = (event) => {
+    event.stopPropagation();
+  };
+
   return (
-    <div className="country-card">
+    <div className="country-card" onClick={handleCardClick}>
       <h3 className="russo-one-regular">
         {countryData.flag && (
           <img
@@ -75,6 +79,7 @@ export default function CountryCard({
           href={`https://www.google.com/travel/flights?q=flights+from+${userCity}+to+${countryData.capital}`}
           target="_blank"
           rel="noopener noreferrer"
+          className="flight-link"
         >
           <strong>Check Flight Tickets</strong>
         </a>

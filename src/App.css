@@ -37,6 +37,23 @@
   animation: fadeIn 0.2s ease-in-out;
 }
 
+.flight-link {
+  background: linear-gradient(
+    to right,
+    #ffd700 20%,
+    #adff2f 40%,
+    #7cfc00 60%,
+    #adff2f 80%,
+    #ffd700 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  background-size: 500% auto;
+  animation: textShine 5s ease-in-out infinite alternate;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -45,6 +62,15 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes textShine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
   }
 }
 
