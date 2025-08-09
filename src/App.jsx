@@ -88,6 +88,12 @@ function App() {
     }
   };
 
+  const setUserLocation = (userPassport) => {
+    setUserPassport(userPassport);
+    const countryData = countryDataMap[userPassport];
+    if (countryData && countryData.capital) setUserCity(countryData.capital);
+  };
+
   const getCountryFromCoordinates = async (lat, lng) => {
     try {
       const response = await fetch(
@@ -151,7 +157,7 @@ function App() {
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
       <PassportSelector
         userPassport={userPassport}
-        setUserPassport={setUserPassport}
+        setUserPassport={setUserLocation}
         availableCountries={availableCountries}
       />
 
