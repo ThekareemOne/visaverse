@@ -6,6 +6,7 @@ export default function CountryCard({
   visaRequirement,
   countryData,
   userCity,
+  onClose,
 }) {
   const getVisaColor = (visaRequirement) => {
     if (typeof visaRequirement === "number") return VISA_COLORS["visa free"];
@@ -32,23 +33,31 @@ export default function CountryCard({
     return population.toLocaleString();
   };
 
-  const handleCardClick = (event) => {
-    event.stopPropagation();
-  };
-
   return (
-    <div className="country-card" onClick={handleCardClick}>
-      <h3 className="russo-one-regular">
-        {countryData.flag && (
-          <img
-            src={countryData.flag}
-            alt={`${name} flag`}
-            width={24}
-            style={{ marginRight: "8px" }}
-          />
-        )}
-        {name}
-      </h3>
+    <div className="country-card">
+      <div className="card-header">
+        <h3 className="russo-one-regular">
+          {countryData.flag && (
+            <img
+              src={countryData.flag}
+              alt={`${name} flag`}
+              width={24}
+              style={{ marginRight: "8px" }}
+            />
+          )}
+          {name}
+        </h3>
+        <button
+          className="close-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+          aria-label="Close country card"
+        >
+          ×
+        </button>
+      </div>
       <div className="country-info hind-madurai-regular">
         <p>
           <strong>Visa Requirement:</strong>{" "}

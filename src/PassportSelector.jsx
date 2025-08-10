@@ -3,12 +3,8 @@ export default function PassportSelector({
   setUserPassport,
   availableCountries,
 }) {
-  const handleCardClick = (event) => {
-    event.stopPropagation();
-  };
-
   return (
-    <div className="passport-selector" onClick={handleCardClick}>
+    <div className="passport-selector">
       <label
         htmlFor="passport-select"
         className="passport-label russo-one-regular"

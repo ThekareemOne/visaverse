@@ -152,22 +152,10 @@ function App() {
     setClickedCountry(country);
   };
 
-  const handleGlobeClick = (event) => {
-    event.stopPropagation();
-    setClickedCountry(null);
-  };
-
-  const handleContainerClick = () => {
-    setClickedCountry(null);
-  };
-
   const displayedCountry = clickedCountry || hoveredCountry;
 
   return (
-    <div
-      style={{ position: "relative", width: "100vw", height: "100vh" }}
-      onClick={handleContainerClick}
-    >
+    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
       <PassportSelector
         userPassport={userPassport}
         setUserPassport={setUserLocation}
@@ -181,6 +169,10 @@ function App() {
           visaRequirement={getVisaRequirement(displayedCountry.id)}
           countryData={countryDataMap[displayedCountry.id] || {}}
           userCity={userCity}
+          onClose={() => {
+            setClickedCountry(null);
+            setHoveredCountry(null);
+          }}
         />
       )}
 
@@ -199,7 +191,6 @@ function App() {
         onPolygonHover={handleCountryHover}
         onPolygonUnhover={handleCountryUnhover}
         onPolygonClick={handleCountryClick}
-        onGlobeClick={handleGlobeClick}
         polygonLabel=""
         rendererConfig={{
           antialias: true,
