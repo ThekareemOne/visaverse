@@ -22,6 +22,17 @@ function App() {
     getUserLocation();
   }, []);
 
+  useEffect(() => {
+    const canvas = document.querySelector("canvas");
+    if (canvas) {
+      if (hoveredCountry) {
+        canvas.classList.add("pin-cursor");
+      } else {
+        canvas.classList.remove("pin-cursor");
+      }
+    }
+  }, [hoveredCountry]);
+
   const fetchCountriesData = async () => {
     try {
       const response = await fetch(
@@ -155,7 +166,13 @@ function App() {
   const displayedCountry = clickedCountry || hoveredCountry;
 
   return (
-    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+    <div
+      style={{
+        position: "relative",
+        width: "100vw",
+        height: "100vh",
+      }}
+    >
       <PassportSelector
         userPassport={userPassport}
         setUserPassport={setUserLocation}
