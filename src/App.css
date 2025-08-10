@@ -328,3 +328,194 @@ canvas.pin-cursor {
   font-weight: 700;
   font-style: normal;
 }
+
+/* RESPONSIVE DESIGN */
+
+/* Mobile Devices (Portrait) */
+@media (max-width: 768px) {
+  .country-card {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100vw !important;
+    min-width: unset;
+    max-height: 40vh;
+    overflow-y: auto;
+    border-radius: 16px 16px 0 0;
+    margin: 0;
+    padding: 16px 20px;
+    z-index: 1001;
+  }
+
+  .card-header {
+    margin-bottom: 8px;
+  }
+
+  .card-header h3 {
+    font-size: 16px;
+  }
+
+  .country-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .country-info p {
+    font-size: 13px;
+    margin: 4px 0;
+  }
+
+  .flight-link {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .passport-selector {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    min-width: 200px;
+    padding: 12px;
+    transform: scale(0.9);
+    transform-origin: top right;
+  }
+
+  .passport-label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .passport-select {
+    font-size: 12px;
+    padding: 8px 12px;
+    padding-right: 32px;
+  }
+}
+
+/* Tablet Devices */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .country-card {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    top: auto;
+    width: calc(100vw - 40px) !important;
+    min-width: unset;
+    max-height: 30vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-header h3 {
+    font-size: 17px;
+  }
+
+  .country-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .country-info p {
+    font-size: 14px;
+    margin: 6px 0;
+  }
+
+  .flight-link {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .passport-selector {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    min-width: 220px;
+    padding: 14px;
+    transform: scale(0.95);
+    transform-origin: top right;
+  }
+}
+
+/* Large Mobile Landscape */
+@media (max-width: 768px) and (orientation: landscape) {
+  .country-card {
+    max-height: 50vh;
+    padding: 12px 16px;
+  }
+
+  .passport-selector {
+    transform: scale(0.8);
+    min-width: 180px;
+    padding: 10px;
+  }
+
+  .passport-label {
+    font-size: 11px;
+  }
+
+  .passport-select {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}
+
+/* Touch Improvements */
+@media (hover: none) and (pointer: coarse) {
+  .close-button {
+    min-width: 40px;
+    height: 40px;
+    font-size: 28px;
+  }
+
+  .passport-select {
+    padding: 14px 16px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .country-card {
+    touch-action: pan-y;
+  }
+}
+
+/* Small Mobile (iPhone SE, etc.) */
+@media (max-width: 480px) {
+  .passport-selector {
+    transform: scale(0.75);
+    min-width: 160px;
+    padding: 8px;
+    top: 5px;
+    right: 5px;
+  }
+
+  .country-card {
+    padding: 14px 16px;
+    max-height: 45vh;
+  }
+
+  .card-header h3 {
+    font-size: 15px;
+  }
+
+  .country-info p {
+    font-size: 12px;
+  }
+}
+
+/* Very Small Mobile */
+@media (max-width: 360px) {
+  .passport-selector {
+    transform: scale(0.7);
+    min-width: 140px;
+  }
+
+  .country-card {
+    padding: 12px 14px;
+  }
+}
