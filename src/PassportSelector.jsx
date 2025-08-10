@@ -3,23 +3,15 @@ export default function PassportSelector({
   setUserPassport,
   availableCountries,
 }) {
+  const handleCardClick = (event) => {
+    event.stopPropagation();
+  };
+
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "20px",
-        right: "20px",
-        zIndex: 1000,
-        background: "rgba(0, 0, 0, 0.8)",
-        padding: "12px",
-        borderRadius: "8px",
-        color: "white",
-      }}
-    >
+    <div className="passport-selector" onClick={handleCardClick}>
       <label
         htmlFor="passport-select"
-        className="hind-madurai-regular"
-        style={{ marginRight: "8px", fontSize: "14px" }}
+        className="passport-label russo-one-regular"
       >
         Your Passport:
       </label>
@@ -27,13 +19,7 @@ export default function PassportSelector({
         id="passport-select"
         value={userPassport}
         onChange={(e) => setUserPassport(e.target.value)}
-        style={{
-          padding: "4px 8px",
-          borderRadius: "4px",
-          border: "none",
-          background: "white",
-          color: "black",
-        }}
+        className="passport-select"
       >
         {availableCountries.map((country) => (
           <option key={country} value={country}>
