@@ -1,7 +1,25 @@
 {
-  "name": "visa-visualizer",
-  "private": true,
-  "version": "0.0.0",
+  "name": "visaverse",
+  "private": false,
+  "version": "1.0.0",
+  "description": "An interactive 3D visa requirements visualizer that helps travelers explore global travel freedom",
+  "license": "MIT",
+  "author": "ThekareemOne",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ThekareemOne/visa-visualizer.git"
+  },
+  "homepage": "https://github.com/ThekareemOne/visa-visualizer",
+  "keywords": [
+    "visa",
+    "passport",
+    "travel",
+    "3d",
+    "globe",
+    "visualization",
+    "react",
+    "threejs"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
