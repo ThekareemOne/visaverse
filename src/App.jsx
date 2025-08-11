@@ -151,10 +151,18 @@ function App() {
   };
 
   const handleCountryHover = (country) => {
+    // Disable hover on touch devices (mobiles and tablets)
+    if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
+      return;
+    }
     setHoveredCountry(country);
   };
 
   const handleCountryUnhover = () => {
+    // Disable hover on touch devices (mobiles and tablets)
+    if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
+      return;
+    }
     setHoveredCountry(null);
   };
 
