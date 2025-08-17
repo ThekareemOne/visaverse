@@ -14,13 +14,25 @@ function App() {
   const [availableCountries, setAvailableCountries] = useState([]);
   const [countryDataMap, setCountryDataMap] = useState({});
   const [clickedCountry, setClickedCountry] = useState(null);
+  const [isGlobeLoaded, setIsGlobeLoaded] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
+    fetchGlobeData();
+
     const initializeData = async () => {
-      fetchGlobeData();
-      const countryData = await fetchCountriesData();
-      fetchPassportData(countryData);
-      getUserLocation();
+      try {
+        const [countryData] = await Promise.all([
+          fetchCountriesData(),
+          getUserLocation(),
+        ]);
+
+        await fetchPassportData(countryData);
+        setIsDataLoaded(true);
+      } catch (error) {
+        console.error("Error initializing data:", error);
+        setIsDataLoaded(true);
+      }
     };
 
     initializeData();
@@ -73,8 +85,11 @@ function App() {
       );
       const data = await response.json();
       setPolygons(data);
+      setIsGlobeLoaded(true);
     } catch (error) {
       console.error("Error fetching globe data:", error);
+      setPolygons({ features: [] });
+      setIsGlobeLoaded(true);
     }
   };
 
@@ -100,12 +115,21 @@ function App() {
     }
   };
 
-  const getUserLocation = () => {
+  const getUserLocation = async () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            timeout: 5000,
+            enableHighAccuracy: false,
+          });
+        });
+
         const { latitude, longitude } = position.coords;
-        getCountryFromCoordinates(latitude, longitude);
-      });
+        await getCountryFromCoordinates(latitude, longitude);
+      } catch (error) {
+        console.log("Geolocation failed or not available:", error);
+      }
     } else {
       console.log("Geolocation is not supported by this browser");
     }
@@ -156,6 +180,11 @@ function App() {
   };
 
   const getCountryColor = (country) => {
+    // Show default color while data is loading
+    if (!isDataLoaded || !passportMap) {
+      return DEFAULT_COLOR;
+    }
+
     const visaReq = getVisaRequirement(country.id);
 
     if (typeof visaReq === "number") return getVisaColor("visa free");
@@ -193,13 +222,15 @@ function App() {
         height: "100vh",
       }}
     >
-      <PassportSelector
-        userPassport={userPassport}
-        setUserPassport={setUserLocation}
-        availableCountries={availableCountries}
-      />
+      {isDataLoaded && availableCountries.length > 0 && (
+        <PassportSelector
+          userPassport={userPassport}
+          setUserPassport={setUserLocation}
+          availableCountries={availableCountries}
+        />
+      )}
 
-      {displayedCountry && (
+      {displayedCountry && isDataLoaded && (
         <CountryCard
           name={displayedCountry.properties.name}
           iso={displayedCountry.id}
@@ -213,27 +244,29 @@ function App() {
         />
       )}
 
-      <Globe
-        polygonsData={polygons.features}
-        polygonAltitude={0.01}
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-day.jpg"
-        backgroundImageUrl="/8k_stars_milky_way.jpg"
-        atmosphereColor="lightskyblue"
-        polygonCapColor={(d) => getCountryColor(d)}
-        polygonSideColor={(d) => getCountryColor(d)}
-        polygonStrokeColor={() => "#000000"}
-        polygonsTransitionDuration={0}
-        atmosphereAltitude={0.25}
-        enablePointerInteraction={true}
-        onPolygonHover={handleCountryHover}
-        onPolygonUnhover={handleCountryUnhover}
-        onPolygonClick={handleCountryClick}
-        polygonLabel=""
-        rendererConfig={{
-          antialias: true,
-          alpha: true,
-        }}
-      />
+      {isGlobeLoaded && (
+        <Globe
+          polygonsData={polygons.features}
+          polygonAltitude={0.01}
+          globeImageUrl="//unpkg.com/three-globe/example/img/earth-day.jpg"
+          backgroundImageUrl="/8k_stars_milky_way.jpg"
+          atmosphereColor="lightskyblue"
+          polygonCapColor={(d) => getCountryColor(d)}
+          polygonSideColor={(d) => getCountryColor(d)}
+          polygonStrokeColor={() => "#000000"}
+          polygonsTransitionDuration={300}
+          atmosphereAltitude={0.25}
+          enablePointerInteraction={true}
+          onPolygonHover={handleCountryHover}
+          onPolygonUnhover={handleCountryUnhover}
+          onPolygonClick={handleCountryClick}
+          polygonLabel=""
+          rendererConfig={{
+            antialias: true,
+            alpha: true,
+          }}
+        />
+      )}
     </div>
   );
 }
