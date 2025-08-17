@@ -18,8 +18,8 @@ export default function PassportSelector({
         className="passport-select"
       >
         {availableCountries.map((country) => (
-          <option key={country} value={country}>
-            {country}
+          <option key={country.value} value={country.value}>
+            {country.name}
           </option>
         ))}
       </select>
