@@ -17,9 +17,9 @@ function App() {
 
   useEffect(() => {
     const initializeData = async () => {
-      await fetchGlobeData();
+      fetchGlobeData();
       const countryData = await fetchCountriesData();
-      await fetchPassportData(countryData);
+      fetchPassportData(countryData);
       getUserLocation();
     };
 
