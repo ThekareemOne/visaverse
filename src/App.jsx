@@ -16,10 +16,14 @@ function App() {
   const [clickedCountry, setClickedCountry] = useState(null);
 
   useEffect(() => {
-    fetchGlobeData();
-    fetchCountriesData();
-    fetchPassportData();
-    getUserLocation();
+    const initializeData = async () => {
+      await fetchGlobeData();
+      const countryData = await fetchCountriesData();
+      await fetchPassportData(countryData);
+      getUserLocation();
+    };
+
+    initializeData();
   }, []);
 
   useEffect(() => {
@@ -55,8 +59,10 @@ function App() {
         return acc;
       }, {});
       setCountryDataMap(countryMap);
+      return countryMap;
     } catch (error) {
       console.error("Error fetching countries data:", error);
+      return {};
     }
   };
 
@@ -72,15 +78,21 @@ function App() {
     }
   };
 
-  const fetchPassportData = async () => {
+  const fetchPassportData = async (countryData) => {
     try {
       const response = await fetch("/passport-index-map.json");
       const data = await response.json();
       setPassportMap(data);
 
       const countryList = Object.keys(data)
-        .map((iso3Code) => iso3Code)
-        .sort((a, b) => a.localeCompare(b));
+        .map((iso3Code) => {
+          const country = countryData[iso3Code];
+          return {
+            name: country ? country.name : iso3Code,
+            value: iso3Code,
+          };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
 
       setAvailableCountries(countryList);
     } catch (error) {
